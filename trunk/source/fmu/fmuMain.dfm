@@ -227,7 +227,7 @@ object frmMain: TfrmMain
             MaxValue = 64000
             MinValue = 70
             TabOrder = 2
-            Value = 0
+            Value = 70
           end
         end
         object Button1: TButton
