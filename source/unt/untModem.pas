@@ -25,9 +25,9 @@ const
 
 type
 
-  TArrayOfString =  array of String;
+  TArrayOfString =  array of AnsiString;
 
-  TOnLog = procedure(AMessage: String) of object;
+  TOnLog = procedure(AMessage: AnsiString) of object;
 
   TComPort = class
   private
@@ -52,7 +52,7 @@ type
     function Open: Boolean;
     procedure Close;
 
-    procedure LogMessage(AMessage: String);
+    procedure LogMessage(AMessage: AnsiString);
   public
     constructor Create();
 
@@ -80,10 +80,10 @@ type
     function SendSMSMessage(ASMS: TSMSMessage): Boolean;
     function GetSMSMessages(AGetSMS: TGetSMS): TSMSMessages;
     function GetSMSMessage(AIndex: Integer): TSMSMessage;
-    function ReadToOK(var ARead: String): Boolean;
+    function ReadToOK(var ARead: AnsiString): Boolean;
     function DeleteSMSMessage(AIndex: Integer): Boolean;
   public
-    class function StringToSMS(AStr: String): TSMSMessage;
+    class function StringToSMS(AStr: AnsiString): TSMSMessage;
     class function AnsiToUCS(AStr: AnsiString): AnsiString;
     class function UCSToAnsi(AStr: AnsiString): AnsiString;
   end;
@@ -97,7 +97,7 @@ type
   end;
 
 const
-  GET_SMS: array [TGetSMS] of string = (
+  GET_SMS: array [TGetSMS] of Ansistring = (
     '"REC UNREAD"',
     '"REC READ"',
     '"STO UNSENT"',
@@ -108,15 +108,15 @@ const
   var isWork:boolean;
       MySMSList : TList;
 
-  function StrParse(AStr: String; ASep: String): TArrayOfString;
-  function StrPart(ABegin, AEnd, Str: String): String;
+  function StrParse(AStr: AnsiString; ASep: AnsiString): TArrayOfString;
+  function StrPart(ABegin, AEnd, Str: AnsiString): AnsiString;
 
 implementation
 
-function StrPart(ABegin, AEnd, Str: String): String;
+function StrPart(ABegin, AEnd, Str: AnsiString): AnsiString;
 var
   b, c: Integer;
-  s: String;
+  s: AnsiString;
 begin
   Result := '0';
   if ABegin <> '' then
@@ -134,11 +134,11 @@ begin
 end;
 
 
-function StrParse(AStr: String; ASep: String): TArrayOfString;
+function StrParse(AStr: AnsiString; ASep: AnsiString): TArrayOfString;
 var
   LPos, LLen, LLenSep: Integer;
 
-  procedure AddToResult(Value: String);
+  procedure AddToResult(Value: AnsiString);
   var
     c: Integer;
   begin
@@ -297,7 +297,7 @@ begin
     LogMessage('  READ: ' + AStr);
 end;
 
-procedure TComPort.LogMessage(AMessage: String);
+procedure TComPort.LogMessage(AMessage: AnsiString);
 begin
   if Assigned(FOnLog) then
     FOnLog(AMessage);
@@ -362,7 +362,7 @@ begin
     Result := Result + Convert(AStr[i]);
 end;
 
-class function TGSMComander.StringToSMS(AStr: String): TSMSMessage;
+class function TGSMComander.StringToSMS(AStr: AnsiString): TSMSMessage;
 var
   LMess: TArrayOfString;
   LHeader: TArrayOfString;
@@ -382,7 +382,7 @@ begin
   end;
 end;
 
-function TGSMComander.ReadToOK(var ARead: String): Boolean;
+function TGSMComander.ReadToOK(var ARead: AnsiString): Boolean;
 var
   LRead: AnsiString;
 begin
@@ -393,16 +393,16 @@ end;
 
 function TGSMComander.SetModemMode(AMode: TMode): Boolean;
 var
-  LRead: String;
+  LRead: AnsiString;
 begin
   LRead := '';
   WriteStr(Format(CMD_CMGF, [ord(AMode)]));
-  Result := ReadToOK(LRead)
+  Result := ReadToOK(LRead);
 end;
 
 function TGSMComander.DeleteSMSMessage(AIndex: Integer): Boolean;
 var
-  LRead: String;
+  LRead: AnsiString;
 begin
   LRead := '';
   WriteStr(Format(CMD_CMGD, [AIndex]));
@@ -411,7 +411,7 @@ end;
 
 function TGSMComander.GetSMSMessage(AIndex: Integer): TSMSMessage;
 var
-  LRead: String;
+  LRead: AnsiString;
 begin
   LRead := '';
   WriteStr(Format(CMD_CMGR, [AIndex]));
@@ -421,7 +421,7 @@ end;
 
 function TGSMComander.GetSMSMessages(AGetSMS: TGetSMS): TSMSMessages;
 var
-  LReadALL: String;
+  LReadALL: AnsiString;
   LList: TArrayOfString;
   i: Integer;
 begin
@@ -445,7 +445,7 @@ end;
 function TGSMComander.SendSMSMessage(ASMS: TSMSMessage): Boolean;
 var
   Lng, i:  Integer;
-  LRead, LText, LMes, LTel, ANum: String;
+  LRead, LText, LMes, LTel, ANum: AnsiString;
 begin
   ANum := ASms.Number;
   if (Length(ANum) mod 2) = 1 then
