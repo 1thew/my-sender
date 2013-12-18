@@ -147,6 +147,7 @@ object frmMain: TfrmMain
     000000000001800000010000000000000000880000110011000088441111}
   OldCreateOrder = False
   Position = poDesigned
+  OnClose = OnClose
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -198,7 +199,7 @@ object frmMain: TfrmMain
             Caption = 'Port'
           end
           object seCOM: TSpinEdit
-            Left = 61
+            Left = 62
             Top = 20
             Width = 65
             Height = 22
@@ -206,27 +207,25 @@ object frmMain: TfrmMain
             MinValue = 0
             TabOrder = 0
             Value = 0
-            OnChange = seCOMChange
           end
           object seTimeOut: TSpinEdit
             Left = 61
             Top = 48
             Width = 65
             Height = 22
+            Increment = 100
             MaxValue = 0
             MinValue = 0
             TabOrder = 1
             Value = 5000
-            OnChange = seCOMChange
           end
           object sePort: TSpinEdit
             Left = 61
             Top = 76
             Width = 65
             Height = 22
-            Enabled = False
-            MaxValue = 0
-            MinValue = 0
+            MaxValue = 64000
+            MinValue = 70
             TabOrder = 2
             Value = 0
           end
@@ -307,7 +306,7 @@ object frmMain: TfrmMain
         Top = 16
         Width = 137
         Height = 17
-        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091'.'
+        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091
         TabOrder = 1
       end
     end

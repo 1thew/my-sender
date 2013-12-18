@@ -42,7 +42,6 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure seCOMChange(Sender: TObject);
     procedure IdHTTPServer1CommandGet(AContext: TIdContext;
       ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
     procedure ParserHTTP(S:Ansistring);
@@ -51,8 +50,11 @@ type
     procedure AboutBtnClick(Sender: TObject);
     procedure ExitBtnClick(Sender: TObject);
     procedure ClearMemoClick(Sender: TObject);
+    procedure OnClose(Sender: TObject; var Action: TCloseAction);
   private
     FGsmSms: TGsmSms;
+    procedure LoadConfig;
+    procedure SaveConfig;
     function SetSMS(n,m:Ansistring):TSMSMessage;
     procedure WMSysCommand(var Msg: TWMSysCommand);message WM_SYSCOMMAND;
   public
@@ -71,6 +73,11 @@ uses fmuSMS;
 procedure TfrmMain.MemoWrite(AMessage: AnsiString);
 begin
   Memo1.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
+end;
+
+procedure TfrmMain.OnClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SaveConfig;
 end;
 
 procedure TfrmMain.AboutBtnClick(Sender: TObject);
@@ -141,30 +148,14 @@ begin
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
-var reg: TRegistry;
+var
   s:AnsiString;
 begin
-  FGsmSms := TGsmSms.Create;
-  FGsmSms.OnLog := MemoWrite;
-  seCOMChange(Sender);
+  LoadConfig;
 
-  reg := TRegistry.Create();
-  reg.RootKey := HKEY_CURRENT_USER;
-  if reg.OpenKey('\Software\altzakroma', True) then
-  begin
-    if reg.ValueExists('seCOM') then
-    begin
-       seCOM.value := reg.ReadInteger('seCOM');
-    end;
-
-  end;
-  reg.CloseKey;
-  reg.Destroy;
-  // узнаЄм версию и пишем в caption
+   // узнаЄм версию и пишем в caption
   s:=FileVersion(Paramstr(0));
   frmMain.Caption:=(frmMain.Caption+' '+'ver.'+ s);
-  //прописываем порт на старте, пока его мен€ть не будем....
-  sePort.Value:=IdHTTPServer1.DefaultPort;
 end;
 
 procedure TfrmMain.IdHTTPServer1CommandGet(AContext: TIdContext;
@@ -189,37 +180,15 @@ procedure TfrmMain.IdHTTPServer1CommandGet(AContext: TIdContext;
 begin
     If Length (ARequestInfo.Params.Text) <1 then exit;
 
-    ARequestInfo.Params.Text:= Utf8Decode(FixString(ARequestInfo.Params.Text));
+    ARequestInfo.Params.Text:= Utf8ToString(FixString(ARequestInfo.Params.Text));
     frmMain.ParserHTTP(ARequestInfo.Params.Text);
 end;
-
-procedure TfrmMain.seCOMChange(Sender: TObject);
-var
-  reg: TRegistry;
-begin
-  if seCOM.Value<1 then exit;
-  if seCOM.Value>99 then exit;
-  
-
-  reg := TRegistry.Create();
-  reg.RootKey := HKEY_CURRENT_USER;
-  if reg.OpenKey('\Software\altzakroma', True) then
-  begin
-    reg.WriteInteger('seCOM', seCOM.Value);
-  end;
-  reg.CloseKey;
-  reg.Destroy;
-
-  FGsmSms.PortNum := seCOM.Value;
-  FGsmSms.TimeOut := seTimeOut.Value;
-end;
-
 
 procedure TfrmMain.Timer1OnTimer(Sender: TObject);
 begin
   if isWork=true then exit;
 
-  //if mySMSList.Count>1 then 
+  //if mySMSList.Count>1 then
 end;
 
 procedure TfrmMain.TrayClick(Sender: TObject);
@@ -244,5 +213,49 @@ begin
    LSMS1:=SetSMS(number,message);
    FGsmSms.SendSMS(LSMS1);
 end;
+
+procedure TfrmMain.LoadConfig;
+var reg: TRegistry;
+begin
+  reg := TRegistry.Create();
+  reg.RootKey := HKEY_LOCAL_MACHINE;
+  if reg.OpenKey('\Software\altzakroma', True) then
+  begin
+    if reg.ValueExists('seCOM') then
+      seCOM.value := reg.ReadInteger('seCOM');
+    if reg.ValueExists('seTimeOut') then
+      seTimeOut.value := reg.ReadInteger('seTimeOut');
+    if reg.ValueExists('sePort') then
+      sePort.value := reg.ReadInteger('sePort');
+  end;
+  reg.CloseKey;
+  reg.Destroy;
+
+  //прописываем веб-порт
+  if sePort.Value >0 then  IdHTTPServer1.DefaultPort:=sePort.Value;
+  // прописываем настройки по классу
+  FGsmSms := TGsmSms.Create;
+  FGsmSms.OnLog := MemoWrite;
+  //seCOMChange(Sender);
+  FGsmSms.PortNum := seCOM.Value;
+  FGsmSms.TimeOut := seTimeOut.Value;
+end;
+
+procedure TfrmMain.SaveConfig;
+var
+  reg: TRegistry;
+begin
+  reg := TRegistry.Create();
+  reg.RootKey := HKEY_LOCAL_MACHINE;
+  if reg.OpenKey('\Software\altzakroma', True) then
+  begin
+    reg.WriteInteger('seCOM', seCOM.Value);
+    reg.WriteInteger('seTimeOut', seTimeOut.Value);
+    reg.WriteInteger('sePort', sePort.Value);
+  end;
+  reg.CloseKey;
+  reg.Destroy;
+end;
+
 
 end.
