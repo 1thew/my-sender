@@ -4,7 +4,8 @@ uses
   Forms,
   fmuMain in 'fmu\fmuMain.pas' {frmMain},
   untModem in 'unt\untModem.pas',
-  fmuSMS in 'fmu\fmuSMS.pas' {frmSMS};
+  fmuSMS in 'fmu\fmuSMS.pas' {frmSMS},
+  GetVersion in 'unt\GetVersion.pas';
 
 {$R *.res}
 

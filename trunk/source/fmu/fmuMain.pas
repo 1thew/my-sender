@@ -7,7 +7,7 @@ uses
   Dialogs, untModem, StdCtrls, Spin, ExtCtrls, Math, ActiveX, IdBaseComponent,
   IdComponent, IdCustomTCPServer, IdCustomHTTPServer, IdHTTPServer,
   IdContext,Registry, Menus, ActnPopup, AppEvnts,
-  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls;
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls, GetVersion;
 
 type
   TfrmMain = class(TForm)
@@ -34,6 +34,9 @@ type
     SettingsTab: TTabSheet;
     LogsTab: TTabSheet;
     TestTab: TTabSheet;
+    sePort: TSpinEdit;
+    Label3: TLabel;
+    DisableSMS: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -42,19 +45,18 @@ type
     procedure seCOMChange(Sender: TObject);
     procedure IdHTTPServer1CommandGet(AContext: TIdContext;
       ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
-    procedure ParserHTTP(S:string);
+    procedure ParserHTTP(S:Ansistring);
     procedure Timer1OnTimer(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
     procedure TrayClick(Sender: TObject);
     procedure AboutBtnClick(Sender: TObject);
     procedure ExitBtnClick(Sender: TObject);
     procedure ClearMemoClick(Sender: TObject);
   private
     FGsmSms: TGsmSms;
-    function SetSMS(n,m:string):TSMSMessage;
+    function SetSMS(n,m:Ansistring):TSMSMessage;
     procedure WMSysCommand(var Msg: TWMSysCommand);message WM_SYSCOMMAND;
   public
-    procedure MemoWrite(AMessage: String);
+    procedure MemoWrite(AMessage: AnsiString);
   end;
 
 var
@@ -66,7 +68,7 @@ uses fmuSMS;
 
 {$R *.dfm}
 
-procedure TfrmMain.MemoWrite(AMessage: String);
+procedure TfrmMain.MemoWrite(AMessage: AnsiString);
 begin
   Memo1.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
 end;
@@ -76,7 +78,7 @@ const PERENOS = Char($0D)+Char($0A);
 begin
   MessageBox(handle, PChar('Программа разработана для altzakroma.ru'+ PERENOS+
   'автор программы К.Абрамовский'+ PERENOS+
-  '2013'),
+  '2013'+PERENOS),
    PChar('О программе SMSSender'), MB_ICONQUESTION);
 end;
 
@@ -122,13 +124,6 @@ if Msg.CmdType = SC_MINIMIZE
    inherited;
 end;
 
-procedure TfrmMain.Button5Click(Sender: TObject);
-var number, message : string;
-  LSMS: TSMSMessage;
-begin
-//      Edit1.Text:=TimeToStr(GetTime);
-end;
-
 procedure TfrmMain.ClearMemoClick(Sender: TObject);
 begin
   Memo1.Clear;
@@ -139,7 +134,7 @@ begin
    frmMain.Close;
 end;
 
-function TfrmMain.SetSMS(n,m:string):TSMSMessage;
+function TfrmMain.SetSMS(n,m:Ansistring):TSMSMessage;
 begin
   Result.Number := n;
   Result.Text := m;
@@ -147,6 +142,7 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 var reg: TRegistry;
+  s:AnsiString;
 begin
   FGsmSms := TGsmSms.Create;
   FGsmSms.OnLog := MemoWrite;
@@ -165,14 +161,35 @@ begin
   reg.CloseKey;
   reg.Destroy;
   // узнаём версию и пишем в caption
-
+  s:=FileVersion(Paramstr(0));
+  frmMain.Caption:=(frmMain.Caption+' '+'ver.'+ s);
+  //прописываем порт на старте, пока его менять не будем....
+  sePort.Value:=IdHTTPServer1.DefaultPort;
 end;
 
 procedure TfrmMain.IdHTTPServer1CommandGet(AContext: TIdContext;
   ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
+  // функция для преобразования 1252 в 1251 (сервер получает данные в 1252)
+  // function for convetring 1252 in 1251
+  function FixString(const AData: String): String;
+  var
+    S: RawByteString;
+    X: Integer;
+  begin
+    SetLength(S, Length(AData));    // выделили память под ANSI-буфер
+    for X := 1 to Length(AData) do  // переносим данные из вида 00A400B700E700D5 в A4B7E7D5
+      S[X] := AnsiChar(AData[X]);
+    SetCodePage(S, 1251, False);    // пометим, что данные A4B7E7D5имеют кодировку Win1251.
+                                    // False указывает на то, что сами данные менять не надо -
+                                    // мы просто указываем, в какой они кодировке
+    Result := S;                    // здесь компилятор автоматически преобразует строку из ANSI/Win1251 в unicode
+  end;
+  // конец
+  // end
 begin
     If Length (ARequestInfo.Params.Text) <1 then exit;
-    ARequestInfo.Params.Text:=Utf8ToAnsi(ARequestInfo.Params.Text);
+
+    ARequestInfo.Params.Text:= Utf8Decode(FixString(ARequestInfo.Params.Text));
     frmMain.ParserHTTP(ARequestInfo.Params.Text);
 end;
 
@@ -210,10 +227,10 @@ begin
    frmMain.Show;
 end;
 
-procedure TfrmMain.ParserHTTP(s:string);
+procedure TfrmMain.ParserHTTP(s:Ansistring);
 var
-  number:string; // номер строкой
-  message:string; // сообщение строкой
+  number, // номер строкой
+  message:Ansistring; // сообщение строкой
   LSMS1: TSMSMessage;
 begin
    // s - строка вхождения, переменные разделяются знаком =
@@ -221,8 +238,10 @@ begin
    //// конец места для доп проверок
    number:=copy(s,5,11);
    message:=copy(s,21,(Length(s)-21));
-   LSMS1:=SetSMS(number,message);
    Memo1.Lines.Add(s);
+
+   if DisableSMS.Checked then exit;
+   LSMS1:=SetSMS(number,message);
    FGsmSms.SendSMS(LSMS1);
 end;
 

@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 341
-  Top = 218
+  Left = 360
+  Top = 225
   Caption = 'SMS Send-er'
   ClientHeight = 345
   ClientWidth = 616
@@ -146,6 +146,7 @@ object frmMain: TfrmMain
     0000000000000000000000000000800000000000000000000000000000008000
     000000000001800000010000000000000000880000110011000088441111}
   OldCreateOrder = False
+  Position = poDesigned
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -158,8 +159,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     object SettingsTab: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
-      ExplicitWidth = 545
-      ExplicitHeight = 293
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -169,14 +168,11 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 145
         Constraints.MinWidth = 145
         TabOrder = 0
-        ExplicitLeft = 3
-        ExplicitTop = 46
-        ExplicitHeight = 223
         object GroupBox1: TGroupBox
           Left = 1
           Top = 1
           Width = 143
-          Height = 140
+          Height = 172
           Align = alTop
           Caption = 'Connect options'
           TabOrder = 0
@@ -193,6 +189,13 @@ object frmMain: TfrmMain
             Width = 40
             Height = 13
             Caption = 'TimeOut'
+          end
+          object Label3: TLabel
+            Left = 36
+            Top = 79
+            Width = 19
+            Height = 13
+            Caption = 'Port'
           end
           object seCOM: TSpinEdit
             Left = 61
@@ -216,10 +219,21 @@ object frmMain: TfrmMain
             Value = 5000
             OnChange = seCOMChange
           end
+          object sePort: TSpinEdit
+            Left = 61
+            Top = 76
+            Width = 65
+            Height = 22
+            Enabled = False
+            MaxValue = 0
+            MinValue = 0
+            TabOrder = 2
+            Value = 0
+          end
         end
         object Button1: TButton
           Left = 17
-          Top = 147
+          Top = 179
           Width = 113
           Height = 25
           Caption = 'Send SMS'
@@ -228,7 +242,7 @@ object frmMain: TfrmMain
         end
         object Button2: TButton
           Left = 16
-          Top = 178
+          Top = 210
           Width = 113
           Height = 25
           Caption = 'Get SMS'
@@ -236,8 +250,8 @@ object frmMain: TfrmMain
           OnClick = Button2Click
         end
         object Button3: TButton
-          Left = 17
-          Top = 209
+          Left = 16
+          Top = 241
           Width = 113
           Height = 25
           Caption = 'Delete SMS'
@@ -246,7 +260,7 @@ object frmMain: TfrmMain
         end
         object Button4: TButton
           Left = 17
-          Top = 240
+          Top = 272
           Width = 113
           Height = 25
           Caption = 'Get All SMS'
@@ -287,7 +301,14 @@ object frmMain: TfrmMain
         Height = 49
         Caption = 'test button'
         TabOrder = 0
-        OnClick = Button5Click
+      end
+      object DisableSMS: TCheckBox
+        Left = 16
+        Top = 16
+        Width = 137
+        Height = 17
+        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091'.'
+        TabOrder = 1
       end
     end
   end
@@ -347,7 +368,7 @@ object frmMain: TfrmMain
     Visible = True
     OnClick = TrayClick
     Left = 496
-    Top = 192
+    Top = 224
   end
   object TrayPopupActionBar1: TPopupActionBar
     Left = 496
