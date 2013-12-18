@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 341
   Top = 218
   Caption = 'SMS Send-er'
-  ClientHeight = 226
-  ClientWidth = 528
+  ClientHeight = 345
+  ClientWidth = 616
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -149,123 +149,147 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object Memo1: TMemo
-    Left = 150
-    Top = 0
-    Width = 234
-    Height = 177
-    Align = alCustom
-    ScrollBars = ssVertical
-    TabOrder = 0
-  end
-  object Panel1: TPanel
+  object PageControl1: TPageControl
     Left = 0
-    Top = 0
-    Width = 145
-    Height = 226
-    Align = alLeft
-    Constraints.MaxWidth = 145
-    Constraints.MinWidth = 145
-    TabOrder = 1
-    object GroupBox1: TGroupBox
-      Left = 1
-      Top = 1
-      Width = 143
-      Height = 80
-      Align = alTop
-      Caption = 'Connect options'
-      TabOrder = 0
-      object Label1: TLabel
-        Left = 32
-        Top = 24
-        Width = 24
-        Height = 13
-        Caption = 'COM'
-      end
-      object Label2: TLabel
-        Left = 16
-        Top = 52
-        Width = 40
-        Height = 13
-        Caption = 'TimeOut'
-      end
-      object seCOM: TSpinEdit
-        Left = 61
-        Top = 20
-        Width = 65
-        Height = 22
-        MaxValue = 999999
-        MinValue = 0
+    Top = 8
+    Width = 585
+    Height = 337
+    ActivePage = SettingsTab
+    TabOrder = 0
+    object SettingsTab: TTabSheet
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      ExplicitWidth = 545
+      ExplicitHeight = 293
+      object Panel1: TPanel
+        Left = 0
+        Top = 0
+        Width = 145
+        Height = 309
+        Align = alLeft
+        Constraints.MaxWidth = 145
+        Constraints.MinWidth = 145
         TabOrder = 0
-        Value = 0
-        OnChange = seCOMChange
+        ExplicitLeft = 3
+        ExplicitTop = 46
+        ExplicitHeight = 223
+        object GroupBox1: TGroupBox
+          Left = 1
+          Top = 1
+          Width = 143
+          Height = 140
+          Align = alTop
+          Caption = 'Connect options'
+          TabOrder = 0
+          object Label1: TLabel
+            Left = 32
+            Top = 24
+            Width = 24
+            Height = 13
+            Caption = 'COM'
+          end
+          object Label2: TLabel
+            Left = 16
+            Top = 52
+            Width = 40
+            Height = 13
+            Caption = 'TimeOut'
+          end
+          object seCOM: TSpinEdit
+            Left = 61
+            Top = 20
+            Width = 65
+            Height = 22
+            MaxValue = 999999
+            MinValue = 0
+            TabOrder = 0
+            Value = 0
+            OnChange = seCOMChange
+          end
+          object seTimeOut: TSpinEdit
+            Left = 61
+            Top = 48
+            Width = 65
+            Height = 22
+            MaxValue = 0
+            MinValue = 0
+            TabOrder = 1
+            Value = 5000
+            OnChange = seCOMChange
+          end
+        end
+        object Button1: TButton
+          Left = 17
+          Top = 147
+          Width = 113
+          Height = 25
+          Caption = 'Send SMS'
+          TabOrder = 1
+          OnClick = Button1Click
+        end
+        object Button2: TButton
+          Left = 16
+          Top = 178
+          Width = 113
+          Height = 25
+          Caption = 'Get SMS'
+          TabOrder = 2
+          OnClick = Button2Click
+        end
+        object Button3: TButton
+          Left = 17
+          Top = 209
+          Width = 113
+          Height = 25
+          Caption = 'Delete SMS'
+          TabOrder = 3
+          OnClick = Button3Click
+        end
+        object Button4: TButton
+          Left = 17
+          Top = 240
+          Width = 113
+          Height = 25
+          Caption = 'Get All SMS'
+          TabOrder = 4
+          OnClick = Button4Click
+        end
       end
-      object seTimeOut: TSpinEdit
-        Left = 61
-        Top = 48
-        Width = 65
-        Height = 22
-        MaxValue = 0
-        MinValue = 0
+    end
+    object LogsTab: TTabSheet
+      Caption = #1051#1086#1075#1080
+      ImageIndex = 1
+      object Memo1: TMemo
+        Left = 3
+        Top = 3
+        Width = 438
+        Height = 158
+        Align = alCustom
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object ClearMemo: TButton
+        Left = 447
+        Top = 17
+        Width = 120
+        Height = 25
+        Caption = 'ClearMemo'
         TabOrder = 1
-        Value = 5000
-        OnChange = seCOMChange
+        OnClick = ClearMemoClick
       end
     end
-    object Button1: TButton
-      Left = 16
-      Top = 88
-      Width = 113
-      Height = 25
-      Caption = 'Send SMS'
-      TabOrder = 1
-      OnClick = Button1Click
+    object TestTab: TTabSheet
+      Caption = #1058#1077#1089#1090#1099
+      ImageIndex = 2
+      object Button5: TButton
+        Left = 461
+        Top = 257
+        Width = 113
+        Height = 49
+        Caption = 'test button'
+        TabOrder = 0
+        OnClick = Button5Click
+      end
     end
-    object Button2: TButton
-      Left = 16
-      Top = 120
-      Width = 113
-      Height = 25
-      Caption = 'Get SMS'
-      TabOrder = 2
-      OnClick = Button2Click
-    end
-    object Button3: TButton
-      Left = 16
-      Top = 152
-      Width = 113
-      Height = 25
-      Caption = 'Delete SMS'
-      TabOrder = 3
-      OnClick = Button3Click
-    end
-    object Button4: TButton
-      Left = 16
-      Top = 184
-      Width = 113
-      Height = 25
-      Caption = 'Get All SMS'
-      TabOrder = 4
-      OnClick = Button4Click
-    end
-  end
-  object Button5: TButton
-    Left = 391
-    Top = 49
-    Width = 113
-    Height = 49
-    Caption = 'test button'
-    TabOrder = 2
-    OnClick = Button5Click
-  end
-  object ClearMemo: TButton
-    Left = 390
-    Top = 104
-    Width = 75
-    Height = 25
-    Caption = 'ClearMemo'
-    TabOrder = 3
-    OnClick = ClearMemoClick
   end
   object Timer1: TTimer
     Interval = 10000
