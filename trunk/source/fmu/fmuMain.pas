@@ -7,7 +7,7 @@ uses
   Dialogs, untModem, StdCtrls, Spin, ExtCtrls, Math, ActiveX, IdBaseComponent,
   IdComponent, IdCustomTCPServer, IdCustomHTTPServer, IdHTTPServer,
   IdContext,Registry, Menus, ActnPopup, AppEvnts,
-  Vcl.PlatformDefaultStyleActnCtrls;
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls;
 
 type
   TfrmMain = class(TForm)
@@ -30,6 +30,10 @@ type
     ExitBtn: TMenuItem;
     AboutBtn: TMenuItem;
     ClearMemo: TButton;
+    PageControl1: TPageControl;
+    SettingsTab: TTabSheet;
+    LogsTab: TTabSheet;
+    TestTab: TTabSheet;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -160,6 +164,8 @@ begin
   end;
   reg.CloseKey;
   reg.Destroy;
+  // узнаём версию и пишем в caption
+
 end;
 
 procedure TfrmMain.IdHTTPServer1CommandGet(AContext: TIdContext;
