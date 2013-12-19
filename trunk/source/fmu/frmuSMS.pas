@@ -10,7 +10,7 @@ type
   TfrmSMS = class(TForm)
     LabeledEdit1: TLabeledEdit;
     LabeledEdit2: TLabeledEdit;
-    Memo1: TMemo;
+    MemoSMS: TMemo;
     Label1: TLabel;
   private
     { Private declarations }

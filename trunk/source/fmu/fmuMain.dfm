@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 360
   Top = 225
   Caption = 'SMS Send-er'
-  ClientHeight = 345
-  ClientWidth = 616
+  ClientHeight = 355
+  ClientWidth = 618
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -153,7 +153,7 @@ object frmMain: TfrmMain
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
-    Top = 8
+    Top = 10
     Width = 585
     Height = 337
     ActivePage = SettingsTab
@@ -229,6 +229,15 @@ object frmMain: TfrmMain
             TabOrder = 2
             Value = 70
           end
+          object Apply: TButton
+            Left = 37
+            Top = 147
+            Width = 75
+            Height = 25
+            Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
+            TabOrder = 3
+            OnClick = ApplyClick
+          end
         end
         object Button1: TButton
           Left = 17
@@ -271,23 +280,24 @@ object frmMain: TfrmMain
     object LogsTab: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      object Memo1: TMemo
-        Left = 3
-        Top = 3
-        Width = 438
-        Height = 158
-        Align = alCustom
-        ScrollBars = ssVertical
-        TabOrder = 0
-      end
       object ClearMemo: TButton
         Left = 447
         Top = 17
         Width = 120
         Height = 25
         Caption = 'ClearMemo'
-        TabOrder = 1
+        TabOrder = 0
         OnClick = ClearMemoClick
+      end
+      object MemoLog: TMemo
+        Left = 16
+        Top = 19
+        Width = 393
+        Height = 169
+        Lines.Strings = (
+          'MemoLog')
+        ReadOnly = True
+        TabOrder = 1
       end
     end
     object TestTab: TTabSheet

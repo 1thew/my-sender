@@ -40,13 +40,13 @@ object frmSMS: TfrmSMS
     EditLabel.Caption = 'date / time'
     TabOrder = 1
   end
-  object Memo1: TMemo
+  object MemoSMS: TMemo
     Left = 16
     Top = 112
     Width = 201
     Height = 129
     Lines.Strings = (
-      'Memo1')
+      'MemoSMS')
     TabOrder = 2
   end
 end

@@ -11,7 +11,6 @@ uses
 
 type
   TfrmMain = class(TForm)
-    Memo1: TMemo;
     Panel1: TPanel;
     GroupBox1: TGroupBox;
     Label1: TLabel;
@@ -37,6 +36,8 @@ type
     sePort: TSpinEdit;
     Label3: TLabel;
     DisableSMS: TCheckBox;
+    MemoLog: TMemo;
+    Apply: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -51,6 +52,7 @@ type
     procedure ExitBtnClick(Sender: TObject);
     procedure ClearMemoClick(Sender: TObject);
     procedure OnClose(Sender: TObject; var Action: TCloseAction);
+    procedure ApplyClick(Sender: TObject);
   private
     FGsmSms: TGsmSms;
     procedure LoadConfig;
@@ -72,7 +74,7 @@ uses fmuSMS;
 
 procedure TfrmMain.MemoWrite(AMessage: AnsiString);
 begin
-  Memo1.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
+  MemoLog.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
 end;
 
 procedure TfrmMain.OnClose(Sender: TObject; var Action: TCloseAction);
@@ -87,6 +89,12 @@ begin
   'автор программы К.Абрамовский'+ PERENOS+
   '2013'+PERENOS),
    PChar('О программе SMSSender'), MB_ICONQUESTION);
+end;
+
+procedure TfrmMain.ApplyClick(Sender: TObject);
+begin
+  SaveConfig;
+  LoadConfig;
 end;
 
 procedure TfrmMain.Button1Click(Sender: TObject);
@@ -133,7 +141,7 @@ end;
 
 procedure TfrmMain.ClearMemoClick(Sender: TObject);
 begin
-  Memo1.Clear;
+  MemoLog.Clear;
 end;
 
 procedure TfrmMain.ExitBtnClick(Sender: TObject);
@@ -207,7 +215,7 @@ begin
    //// конец места для доп проверок
    number:=copy(s,5,11);
    message:=copy(s,21,(Length(s)-21));
-   Memo1.Lines.Add(s);
+   MemoWrite(s);
 
    if DisableSMS.Checked then exit;
    LSMS1:=SetSMS(number,message);
