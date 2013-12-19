@@ -10,8 +10,8 @@ type
   TfrmSMS = class(TForm)
     LabeledEdit1: TLabeledEdit;
     LabeledEdit2: TLabeledEdit;
-    Memo1: TMemo;
     Label1: TLabel;
+    MemoSMS:Tmemo;
   private
     { Private declarations }
   public
@@ -34,10 +34,10 @@ begin
   LabeledEdit2.Enabled := False;
   LabeledEdit2.Text := '';
   LabeledEdit1.Text := '';
-  Memo1.Text := 'бла бла бла';
+  MemoSMS.Text := 'бла бла бла';
   ShowModal;
   Result.Number := LabeledEdit1.Text;
-  Result.Text := Memo1.Text;
+  Result.Text := MemoSMS.Text;
 end;
 
 procedure TfrmSMS.ShowSMS(ASMS: TSMSMessage);
@@ -45,7 +45,7 @@ begin
   LabeledEdit2.Enabled := True;
   LabeledEdit1.Text := ASMS.Number;
   LabeledEdit2.Text := ASMS.Time;
-  Memo1.Text := ASMS.Text;
+  MemoSMS.Text := ASMS.Text;
   ShowModal;
 end;
 

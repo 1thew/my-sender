@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.461,D:\SMSSender SVN\source\unt\GetVersion.pas=D:\SMSSender SVN\source\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.900,=D:\SMSSender SVN\source\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.461,D:\SMSSender SVN\source\Unit1.pas=D:\SMSSender SVN\source\unt\GetVersion.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.dproj,D:\yandex disk\SMS_GSM\source\GSM_SMS.dproj=D:\yandex disk\SMS_GSM\source\GSM_SMS.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.900,=D:\SMSSender SVN\source\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.399,=D:\SMSSender SVN\source\unt\JclUnicode.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.363,D:\SMSSender SVN\source\unt\JclUnicode.pas=</Transaction>
   </Transactions>
