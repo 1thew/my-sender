@@ -7,7 +7,7 @@ uses
   Dialogs, untModem, StdCtrls, Spin, ExtCtrls, Math, ActiveX, IdBaseComponent,
   IdComponent, IdCustomTCPServer, IdCustomHTTPServer, IdHTTPServer,
   IdContext,Registry, Menus, ActnPopup, AppEvnts,
-  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls, GetVersion;
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls, GetVersion, Log;
 
 type
   TfrmMain = class(TForm)
@@ -38,6 +38,8 @@ type
     DisableSMS: TCheckBox;
     MemoLog: TMemo;
     Apply: TButton;
+    SaveInFile: TCheckBox;
+    GroupBox2: TGroupBox;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -65,6 +67,8 @@ type
 
 var
   frmMain: TfrmMain;
+  Log:TLog;
+
 
 implementation
 
@@ -75,6 +79,7 @@ uses fmuSMS;
 procedure TfrmMain.MemoWrite(AMessage: AnsiString);
 begin
   MemoLog.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
+  Log.AddLogInFile(AMessage);
 end;
 
 procedure TfrmMain.OnClose(Sender: TObject; var Action: TCloseAction);
@@ -164,6 +169,10 @@ begin
    // узнаём версию и пишем в caption
   s:=FileVersion(Paramstr(0));
   frmMain.Caption:=(frmMain.Caption+' '+'ver.'+ s);
+
+  Log:=TLog.Create;
+  if frmMain.SaveInFile.Checked = true then Log.AllowSaveInFile:=true;
+
 end;
 
 procedure TfrmMain.IdHTTPServer1CommandGet(AContext: TIdContext;
@@ -225,6 +234,7 @@ end;
 procedure TfrmMain.LoadConfig;
 var reg: TRegistry;
 begin
+  try
   reg := TRegistry.Create();
   reg.RootKey := HKEY_LOCAL_MACHINE;
   if reg.OpenKey('\Software\altzakroma', True) then
@@ -235,6 +245,13 @@ begin
       seTimeOut.value := reg.ReadInteger('seTimeOut');
     if reg.ValueExists('sePort') then
       sePort.value := reg.ReadInteger('sePort');
+    // чекбокс, если 1 - чекаем
+    if reg.ValueExists('SaveInFile') then
+    begin
+      if reg.ReadInteger('SaveInFile')=1 then
+          frmMain.SaveInFile.Checked := true;
+    end;
+
   end;
   reg.CloseKey;
   reg.Destroy;
@@ -247,12 +264,16 @@ begin
   //seCOMChange(Sender);
   FGsmSms.PortNum := seCOM.Value;
   FGsmSms.TimeOut := seTimeOut.Value;
+  Except
+    ShowMessage('Неизвестная ошибка LoadConfig');
+  end;
 end;
 
 procedure TfrmMain.SaveConfig;
 var
   reg: TRegistry;
 begin
+try
   reg := TRegistry.Create();
   reg.RootKey := HKEY_LOCAL_MACHINE;
   if reg.OpenKey('\Software\altzakroma', True) then
@@ -260,9 +281,14 @@ begin
     reg.WriteInteger('seCOM', seCOM.Value);
     reg.WriteInteger('seTimeOut', seTimeOut.Value);
     reg.WriteInteger('sePort', sePort.Value);
+    if frmMain.SaveInFile.Checked=true then reg.WriteInteger('SaveInFile', 1)
+    else  reg.WriteInteger('SaveInFile', 0)
   end;
   reg.CloseKey;
   reg.Destroy;
+Except
+    ShowMessage('Неизвестная ошибка SaveConfig');
+end;
 end;
 
 

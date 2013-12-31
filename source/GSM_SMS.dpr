@@ -5,7 +5,8 @@ uses
   fmuMain in 'fmu\fmuMain.pas' {frmMain},
   untModem in 'unt\untModem.pas',
   fmuSMS in 'fmu\fmuSMS.pas' {frmSMS},
-  GetVersion in 'unt\GetVersion.pas';
+  GetVersion in 'unt\GetVersion.pas',
+  Log in 'unt\Log.pas';
 
 {$R *.res}
 
