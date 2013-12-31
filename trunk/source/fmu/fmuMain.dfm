@@ -276,6 +276,22 @@ object frmMain: TfrmMain
           OnClick = Button4Click
         end
       end
+      object GroupBox2: TGroupBox
+        Left = 150
+        Top = 0
+        Width = 241
+        Height = 99
+        Caption = #1051#1086#1075#1080#1088#1086#1074#1072#1085#1080#1077
+        TabOrder = 1
+        object SaveInFile: TCheckBox
+          Left = 3
+          Top = 23
+          Width = 124
+          Height = 17
+          Caption = #1079#1072#1087#1080#1089#1100' '#1074' '#1083#1086#1075'-'#1092#1072#1081#1083
+          TabOrder = 0
+        end
+      end
     end
     object LogsTab: TTabSheet
       Caption = #1051#1086#1075#1080
