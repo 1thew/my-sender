@@ -156,10 +156,14 @@ object frmMain: TfrmMain
     Top = 10
     Width = 585
     Height = 337
-    ActivePage = TestTab
+    ActivePage = TabSheet1
     TabOrder = 0
     object SettingsTab: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -296,6 +300,10 @@ object frmMain: TfrmMain
     object LogsTab: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ClearMemo: TButton
         Left = 447
         Top = 17
@@ -326,6 +334,10 @@ object frmMain: TfrmMain
     object TestTab: TTabSheet
       Caption = #1058#1077#1089#1090#1099
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Button5: TButton
         Left = 461
         Top = 257
@@ -341,6 +353,26 @@ object frmMain: TfrmMain
         Height = 17
         Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091
         TabOrder = 1
+      end
+    end
+    object TabSheet1: TTabSheet
+      Caption = #1040#1082#1090#1080#1074#1072#1094#1080#1103
+      ImageIndex = 3
+      object MbHWEdit: TEdit
+        Left = 24
+        Top = 56
+        Width = 297
+        Height = 21
+        TabOrder = 0
+        Text = #1042#1072#1096' ID'
+      end
+      object Edit2: TEdit
+        Left = 24
+        Top = 96
+        Width = 297
+        Height = 21
+        TabOrder = 1
+        Text = 'Edit2'
       end
     end
   end

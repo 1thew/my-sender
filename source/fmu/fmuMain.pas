@@ -7,7 +7,8 @@ uses
   Dialogs, untModem, StdCtrls, Spin, ExtCtrls, Math, ActiveX, IdBaseComponent,
   IdComponent, IdCustomTCPServer, IdCustomHTTPServer, IdHTTPServer,
   IdContext,Registry, Menus, ActnPopup, AppEvnts,
-  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls, GetVersion, Log;
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls, GetVersion, Log,
+  redistration;
 
 type
   TfrmMain = class(TForm)
@@ -40,6 +41,9 @@ type
     Apply: TButton;
     SaveInFile: TCheckBox;
     GroupBox2: TGroupBox;
+    TabSheet1: TTabSheet;
+    MbHWEdit: TEdit;
+    Edit2: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
