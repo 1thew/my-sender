@@ -156,7 +156,7 @@ object frmMain: TfrmMain
     Top = 10
     Width = 585
     Height = 337
-    ActivePage = SettingsTab
+    ActivePage = TestTab
     TabOrder = 0
     object SettingsTab: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -310,9 +310,16 @@ object frmMain: TfrmMain
         Top = 19
         Width = 393
         Height = 169
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
         Lines.Strings = (
           'MemoLog')
+        ParentFont = False
         ReadOnly = True
+        ScrollBars = ssVertical
         TabOrder = 1
       end
     end
