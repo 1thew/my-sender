@@ -444,9 +444,10 @@ end;
 
 function TGSMComander.SendSMSMessage(ASMS: TSMSMessage): Boolean;
 var
-  Lng, i:  Integer;
+  Lng, i,r:  Integer;
   LRead, LText, LMes, LTel, ANum: AnsiString;
 begin
+
   ANum := ASms.Number;
   if (Length(ANum) mod 2) = 1 then
     ANum := ANum + 'F';

@@ -19,9 +19,6 @@ Coordinates=242,10,69,51
 [TrayPopupActionBar1]
 Coordinates=386,1,140,36
 
-[Panel1]
-Coordinates=73,146,47,51
-
 [Timer1]
 Coordinates=248,269,54,36
 
@@ -92,4 +89,7 @@ Coordinates=564,221,73,33
 
 [GroupBox2]
 Coordinates=143,174,70,51
+
+[ConnectOpt]
+Coordinates=73,146,47,51
 

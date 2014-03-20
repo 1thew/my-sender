@@ -1,19 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.021,D:\SMSSender SVN\source\Unit1.pas=D:\SMSSender SVN\source\unt\Log.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.564,D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.374,D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.399,=D:\SMSSender SVN\source\unt\JclUnicode.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.363,D:\SMSSender SVN\source\unt\JclUnicode.pas=</Transaction>
     <Transaction>1899.12.30 00:00:00.000.dproj,D:\yandex disk\SMS_GSM\source\GSM_SMS.dproj=D:\yandex disk\SMS_GSM\source\GSM_SMS.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.585,=D:\SMSSender SVN\source\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.251,D:\SMSSender SVN\source\unt\Crypto.pas=D:\SMSSender SVN\source\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.298,=D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.931,=D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.461,D:\SMSSender SVN\source\Unit1.pas=D:\SMSSender SVN\source\unt\GetVersion.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.900,=D:\SMSSender SVN\source\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.363,D:\SMSSender SVN\source\unt\JclUnicode.pas=</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.399,=D:\SMSSender SVN\source\unt\JclUnicode.pas</Transaction>
-    <Transaction>2014.03.16 19:27:53.298,=D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas</Transaction>
-    <Transaction>2014.03.16 19:28:26.564,D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas=</Transaction>
-    <Transaction>2014.03.16 19:33:13.931,=D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas</Transaction>
-    <Transaction>2014.03.16 19:33:13.984,=D:\smssender svn\source\unt\uWmiDelphiClass.pas</Transaction>
-    <Transaction>2014.03.16 19:56:32.160,D:\smssender svn\source\unt\uWmiDelphiClass.pas=</Transaction>
-    <Transaction>2014.03.16 19:56:33.374,D:\smssender svn\source\unt\uWin32_MotherboardDevice.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.884,=D:\SMSSender SVN\source\unt\registration.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.021,D:\SMSSender SVN\source\Unit1.pas=D:\SMSSender SVN\source\unt\Log.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.984,=D:\smssender svn\source\unt\uWmiDelphiClass.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.160,D:\smssender svn\source\unt\uWmiDelphiClass.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.491,=D:\SMSSender SVN\source\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.585,=D:\SMSSender SVN\source\Unit1.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="fmu"/>
@@ -22,8 +25,10 @@
     <File Path="fmu\fmuSMS.pas"/>
     <File Path="fmu\fmuSMS.dfm"/>
     <File Path="unt"/>
+    <File Path="unt\Crypto.pas"/>
     <File Path="unt\GetVersion.pas"/>
     <File Path="unt\Log.pas"/>
+    <File Path="unt\registration.pas"/>
     <File Path="unt\untModem.pas"/>
   </ProjectSortOrder>
 </BorlandProject>
