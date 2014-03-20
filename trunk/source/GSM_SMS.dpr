@@ -6,7 +6,9 @@ uses
   untModem in 'unt\untModem.pas',
   fmuSMS in 'fmu\fmuSMS.pas' {frmSMS},
   GetVersion in 'unt\GetVersion.pas',
-  Log in 'unt\Log.pas';
+  Log in 'unt\Log.pas',
+  registration in 'unt\registration.pas',
+  Crypto in 'unt\Crypto.pas';
 
 {$R *.res}
 

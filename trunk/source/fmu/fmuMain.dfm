@@ -156,15 +156,11 @@ object frmMain: TfrmMain
     Top = 10
     Width = 585
     Height = 337
-    ActivePage = TabSheet1
+    ActivePage = SettingsTab
     TabOrder = 0
     object SettingsTab: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object Panel1: TPanel
+      object ConnectOpt: TPanel
         Left = 0
         Top = 0
         Width = 145
@@ -281,29 +277,33 @@ object frmMain: TfrmMain
         end
       end
       object GroupBox2: TGroupBox
-        Left = 150
+        Left = 151
         Top = 0
         Width = 241
         Height = 99
         Caption = #1051#1086#1075#1080#1088#1086#1074#1072#1085#1080#1077
         TabOrder = 1
         object SaveInFile: TCheckBox
-          Left = 3
-          Top = 23
+          Left = 16
+          Top = 46
           Width = 124
           Height = 17
           Caption = #1079#1072#1087#1080#1089#1100' '#1074' '#1083#1086#1075'-'#1092#1072#1081#1083
           TabOrder = 0
         end
       end
+      object DisableSMS: TCheckBox
+        Left = 167
+        Top = 23
+        Width = 137
+        Height = 17
+        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091
+        TabOrder = 2
+      end
     end
     object LogsTab: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ClearMemo: TButton
         Left = 447
         Top = 17
@@ -334,10 +334,6 @@ object frmMain: TfrmMain
     object TestTab: TTabSheet
       Caption = #1058#1077#1089#1090#1099
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Button5: TButton
         Left = 461
         Top = 257
@@ -345,34 +341,44 @@ object frmMain: TfrmMain
         Height = 49
         Caption = 'test button'
         TabOrder = 0
-      end
-      object DisableSMS: TCheckBox
-        Left = 16
-        Top = 16
-        Width = 137
-        Height = 17
-        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091
-        TabOrder = 1
+        OnClick = Button5Click
       end
     end
-    object TabSheet1: TTabSheet
+    object ActivationTab: TTabSheet
       Caption = #1040#1082#1090#1080#1074#1072#1094#1080#1103
       ImageIndex = 3
+      object Label4: TLabel
+        Left = 327
+        Top = 99
+        Width = 70
+        Height = 13
+        Caption = #1042#1074#1077#1076#1080#1090#1077' '#1082#1083#1102#1095
+      end
       object MbHWEdit: TEdit
         Left = 24
         Top = 56
         Width = 297
         Height = 21
+        ReadOnly = True
         TabOrder = 0
         Text = #1042#1072#1096' ID'
       end
-      object Edit2: TEdit
+      object KeyEdit: TEdit
         Left = 24
         Top = 96
         Width = 297
         Height = 21
         TabOrder = 1
-        Text = 'Edit2'
+      end
+      object Activation: TButton
+        Left = 24
+        Top = 136
+        Width = 97
+        Height = 41
+        Caption = #1040#1082#1090#1080#1074#1080#1088#1086#1074#1072#1090#1100
+        ModalResult = 1
+        TabOrder = 2
+        OnClick = ActivationClick
       end
     end
   end
@@ -445,5 +451,22 @@ object frmMain: TfrmMain
       Caption = #1042#1099#1093#1086#1076
       OnClick = ExitBtnClick
     end
+  end
+  object HTTPClient: TIdHTTP
+    AllowCookies = True
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = -1
+    Request.ContentRangeStart = -1
+    Request.ContentRangeInstanceLength = -1
+    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 532
+    Top = 306
   end
 end

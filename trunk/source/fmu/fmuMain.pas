@@ -8,11 +8,11 @@ uses
   IdComponent, IdCustomTCPServer, IdCustomHTTPServer, IdHTTPServer,
   IdContext,Registry, Menus, ActnPopup, AppEvnts,
   Vcl.PlatformDefaultStyleActnCtrls, Vcl.ComCtrls, GetVersion, Log,
-  redistration;
+  registration, IdTCPConnection, IdTCPClient, IdHTTP, Crypto;
 
 type
   TfrmMain = class(TForm)
-    Panel1: TPanel;
+    ConnectOpt: TPanel;
     GroupBox1: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
@@ -41,9 +41,12 @@ type
     Apply: TButton;
     SaveInFile: TCheckBox;
     GroupBox2: TGroupBox;
-    TabSheet1: TTabSheet;
+    ActivationTab: TTabSheet;
     MbHWEdit: TEdit;
-    Edit2: TEdit;
+    KeyEdit: TEdit;
+    Label4: TLabel;
+    Activation: TButton;
+    HTTPClient: TIdHTTP;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -59,10 +62,16 @@ type
     procedure ClearMemoClick(Sender: TObject);
     procedure OnClose(Sender: TObject; var Action: TCloseAction);
     procedure ApplyClick(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure ActivationClick(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
+    KeyString:Ansistring;
     FGsmSms: TGsmSms;
     procedure LoadConfig;
     procedure SaveConfig;
+    procedure SaveLic(b:bool);
+    function CheckLic: bool;   // если tru то всё нормально, иначе - лицензия не действительна
     function SetSMS(n,m:Ansistring):TSMSMessage;
     procedure WMSysCommand(var Msg: TWMSysCommand);message WM_SYSCOMMAND;
   public
@@ -94,10 +103,52 @@ end;
 procedure TfrmMain.AboutBtnClick(Sender: TObject);
 const PERENOS = Char($0D)+Char($0A);
 begin
-  MessageBox(handle, PChar('Программа разработана для altzakroma.ru'+ PERENOS+
-  'автор программы К.Абрамовский'+ PERENOS+
-  '2013'+PERENOS),
+  MessageBox(handle, PChar('Программа разработана ctr-it.ru'+ PERENOS+
+  'Техподдержка support@ctr-it.ru'+ PERENOS+
+  '2014'+PERENOS),
    PChar('О программе SMSSender'), MB_ICONQUESTION);
+end;
+
+procedure TfrmMain.ActivationClick(Sender: TObject);
+var dataStr:TStringList; // объект для POST запроса
+const URL='http://ctr-it.ru/sms/registration.php';
+begin
+//*********************************
+// проверим заполнение поля
+  if Length(KeyEdit.Text)<16 then
+  begin
+    ShowMessage('Проверьте ключ!');
+    exit;
+  end;
+
+// лезем отправлять  WHID + KEY
+// для начала формируем POST запрос
+  dataStr:=TStringList.Create();
+  dataStr.Values['hwid'] := MbHW;
+  dataStr.Values['key'] := frmMain.KeyEdit.Text;
+  try
+    try
+      HttpResponse:=HTTPClient.Post(URL, dataStr); //отправляем POST запрос
+    except
+      begin
+        ShowMEssage('Сервер не доступен.');
+        Exit;
+      end;
+    end;
+  finally
+    begin
+      dataStr.Free;
+    end;
+  end;
+  //************************************
+  //      проверка на соотвествие
+  //************************************
+  if AnsiPos(HttpResponse,AES256(MbHW)) > 0 then SaveLic(true)
+  else SaveLic(false);          // false - рандомим
+  // -----------------------------------
+
+
+
 end;
 
 procedure TfrmMain.ApplyClick(Sender: TObject);
@@ -138,6 +189,19 @@ begin
     frmSMS.ShowSMS(LSMSs[i]);
 end;
 
+procedure TfrmMain.Button5Click(Sender: TObject);
+var a,b,Key:Ansistring;
+begin
+end;
+
+
+
+procedure TfrmMain.Button6Click(Sender: TObject);
+var a,b: ansistring;
+begin
+  if CheckLic=true then ShowMEssage('CheckLic=true');
+end;
+
 procedure TfrmMain.WMSysCommand(var Msg: TWMSysCommand);
 begin
 if Msg.CmdType = SC_MINIMIZE
@@ -148,10 +212,56 @@ if Msg.CmdType = SC_MINIMIZE
    inherited;
 end;
 
+function TfrmMain.CheckLic: bool;
+var s,version:AnsiString;
+  f: TextFile; // файл
+  buf: string[80]; // буфер для чтения из файла
+  stringlist:TStringlist;
+const
+  fName= 'key.lic'; // имя файла
+begin
+result:=false;
+try
+  stringList:=TStringList.Create;
+  stringList.LoadFromFile(fName);
+  version:=FileVersion(Paramstr(0));
+  s:=AES256(version+MbHW+KeyEdit.Text);
+  if stringList.IndexOf(s) =0 then
+    result := true
+  else result:=false;
+finally stringList.Free;
+end;
+end;
+
 procedure TfrmMain.ClearMemoClick(Sender: TObject);
 begin
   MemoLog.Clear;
 end;
+
+procedure TfrmMain.SaveLic(b:bool);
+var
+  version: ansistring;
+  s:Ansistring;
+  keyFileStringList:TStringList;
+// форма сохранения регистрационнх данных в файл
+const
+   namekeyfile= 'key.lic';
+begin
+   keyFileStringList:=TstringList.Create;
+   keyFileStringList.Clear;
+   version:=FileVersion(Paramstr(0));   // узнаем версию
+   if b=false then version:=version+version;
+
+   s:=AES256(version+MbHW+KeyEdit.Text);
+   //keyFileStringList.Add(CryptoAES192(KeyEdit.text,KinderSupriseMD(version)));// добавление строки к файлу
+   keyFileStringList.Add(s);
+   keyFileStringList.SaveToFile(namekeyfile,TEncoding.ASCII);
+   FreeAndNil(keyFileStringList);
+   ShowMessage('Лицензия сохранена. Храните ключ активации!');
+   ShowMessage('Перезапустите программу!');
+   Application.Terminate;
+end;
+
 
 procedure TfrmMain.ExitBtnClick(Sender: TObject);
 begin
@@ -159,7 +269,19 @@ begin
 end;
 
 function TfrmMain.SetSMS(n,m:Ansistring):TSMSMessage;
+var r:integer;
 begin
+if CheckLic=false then
+  begin
+    Randomize;
+    r:=random(100);
+    if r<20 then
+    begin
+      ShowMessage('Программа не активирована.');
+      Application.Terminate;
+    end;
+
+  end;
   Result.Number := n;
   Result.Text := m;
 end;
@@ -168,11 +290,24 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   s:AnsiString;
 begin
+  // получим HW ID
+  GetCompUIN;
+  MbHWEdit.Text:=MbHW;
+
   LoadConfig;
 
    // узнаём версию и пишем в caption
   s:=FileVersion(Paramstr(0));
   frmMain.Caption:=(frmMain.Caption+' '+'ver.'+ s);
+
+  // проверим лицензию
+  if CheckLic=false then
+  begin
+    ShowMEssage('Программа не зарегистрирована! Подождите...');
+    Sleep(10000);
+    PageControl1.ActivePage:=ActivationTab;
+  end
+  else PageControl1.ActivePage:=SettingsTab;
 
   Log:=TLog.Create;
   if frmMain.SaveInFile.Checked = true then Log.AllowSaveInFile:=true;
@@ -230,7 +365,7 @@ begin
    message:=copy(s,21,(Length(s)-21));
    MemoWrite(s);
 
-   if DisableSMS.Checked then exit;
+   if DisableSMS.Checked=true then exit;
    LSMS1:=SetSMS(number,message);
    FGsmSms.SendSMS(LSMS1);
 end;

@@ -10,6 +10,7 @@ uses
 
 var
   MbHW:Ansistring;
+  HttpResponse:Ansistring;
 
   procedure GetCompUIN;
   //procedure  GetWin32_ComputerSystemProductInfo;
