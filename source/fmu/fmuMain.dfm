@@ -156,7 +156,7 @@ object frmMain: TfrmMain
     Top = 10
     Width = 585
     Height = 337
-    ActivePage = SettingsTab
+    ActivePage = ActivationTab
     TabOrder = 0
     object SettingsTab: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -244,34 +244,34 @@ object frmMain: TfrmMain
           Top = 179
           Width = 113
           Height = 25
-          Caption = 'Send SMS'
+          Caption = #1055#1086#1089#1083#1072#1090#1100' SMS'
           TabOrder = 1
           OnClick = Button1Click
         end
         object Button2: TButton
-          Left = 16
+          Left = 17
           Top = 210
           Width = 113
           Height = 25
-          Caption = 'Get SMS'
+          Caption = #1055#1086#1083#1091#1095#1080#1090#1100' SMS'
           TabOrder = 2
           OnClick = Button2Click
         end
         object Button3: TButton
-          Left = 16
-          Top = 241
+          Left = 17
+          Top = 272
           Width = 113
           Height = 25
-          Caption = 'Delete SMS'
+          Caption = #1059#1076#1072#1083#1080#1090#1100' SMS'
           TabOrder = 3
           OnClick = Button3Click
         end
         object Button4: TButton
           Left = 17
-          Top = 272
+          Top = 241
           Width = 113
           Height = 25
-          Caption = 'Get All SMS'
+          Caption = #1055#1086#1083#1091#1095#1080#1090#1100' '#1074#1089#1077' SMS'
           TabOrder = 4
           OnClick = Button4Click
         end
@@ -285,31 +285,54 @@ object frmMain: TfrmMain
         TabOrder = 1
         object SaveInFile: TCheckBox
           Left = 16
-          Top = 46
+          Top = 23
           Width = 124
           Height = 17
           Caption = #1079#1072#1087#1080#1089#1100' '#1074' '#1083#1086#1075'-'#1092#1072#1081#1083
           TabOrder = 0
         end
       end
-      object DisableSMS: TCheckBox
-        Left = 167
-        Top = 23
-        Width = 137
-        Height = 17
-        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091
+      object GroupBox3: TGroupBox
+        Left = 151
+        Top = 105
+        Width = 241
+        Height = 105
+        Caption = #1054#1073#1097#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
         TabOrder = 2
+        object DisableSMS: TCheckBox
+          Left = 16
+          Top = 24
+          Width = 137
+          Height = 17
+          Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1086#1090#1087#1088#1072#1074#1082#1091
+          TabOrder = 0
+        end
+        object AutoRun: TCheckBox
+          Left = 16
+          Top = 47
+          Width = 97
+          Height = 17
+          Caption = #1040#1074#1090#1086#1079#1072#1075#1088#1091#1079#1082#1072
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnClick = AutoRunClick
+        end
       end
     end
     object LogsTab: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
       object ClearMemo: TButton
-        Left = 447
-        Top = 17
+        Left = 415
+        Top = 19
         Width = 120
-        Height = 25
-        Caption = 'ClearMemo'
+        Height = 40
+        Caption = #1054#1095#1080#1089#1090#1080#1090#1100
         TabOrder = 0
         OnClick = ClearMemoClick
       end
@@ -324,7 +347,7 @@ object frmMain: TfrmMain
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         Lines.Strings = (
-          'MemoLog')
+          #1058#1077#1082#1091#1097#1072#1103' '#1072#1082#1090#1080#1074#1085#1086#1089#1090#1100)
         ParentFont = False
         ReadOnly = True
         ScrollBars = ssVertical
@@ -334,6 +357,7 @@ object frmMain: TfrmMain
     object TestTab: TTabSheet
       Caption = #1058#1077#1089#1090#1099
       ImageIndex = 2
+      TabVisible = False
       object Button5: TButton
         Left = 461
         Top = 257
@@ -341,7 +365,7 @@ object frmMain: TfrmMain
         Height = 49
         Caption = 'test button'
         TabOrder = 0
-        OnClick = Button5Click
+        Visible = False
       end
     end
     object ActivationTab: TTabSheet
