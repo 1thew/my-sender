@@ -1,7 +1,7 @@
 object frmSMS: TfrmSMS
   Left = 740
   Top = 328
-  Caption = 'SMS'
+  Caption = 'SMS Send-er'
   ClientHeight = 251
   ClientWidth = 236
   Color = clBtnFace
@@ -16,37 +16,35 @@ object frmSMS: TfrmSMS
   object Label1: TLabel
     Left = 16
     Top = 96
-    Width = 17
+    Width = 30
     Height = 13
-    Caption = 'text'
+    Caption = #1058#1077#1082#1089#1090
   end
   object LabeledEdit1: TLabeledEdit
     Left = 16
     Top = 16
     Width = 201
     Height = 21
-    EditLabel.Width = 32
+    EditLabel.Width = 100
     EditLabel.Height = 13
-    EditLabel.Caption = 'sender'
+    EditLabel.Caption = #1058#1077#1083#1077#1092#1086#1085#1085#1099#1081' '#1085#1086#1084#1077#1088
     TabOrder = 0
   end
   object LabeledEdit2: TLabeledEdit
     Left = 16
-    Top = 62
+    Top = 61
     Width = 201
     Height = 21
-    EditLabel.Width = 51
+    EditLabel.Width = 70
     EditLabel.Height = 13
-    EditLabel.Caption = 'date / time'
+    EditLabel.Caption = #1044#1072#1090#1072' '#1080' '#1074#1088#1077#1084#1103
     TabOrder = 1
   end
   object MemoSMS: TMemo
     Left = 16
-    Top = 112
+    Top = 114
     Width = 201
     Height = 129
-    Lines.Strings = (
-      'MemoSMS')
     TabOrder = 2
   end
 end

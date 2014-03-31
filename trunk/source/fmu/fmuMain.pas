@@ -47,6 +47,8 @@ type
     Label4: TLabel;
     Activation: TButton;
     HTTPClient: TIdHTTP;
+    GroupBox3: TGroupBox;
+    AutoRun: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -62,9 +64,9 @@ type
     procedure ClearMemoClick(Sender: TObject);
     procedure OnClose(Sender: TObject; var Action: TCloseAction);
     procedure ApplyClick(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
     procedure ActivationClick(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure AutoRunClick(Sender: TObject);
   private
     KeyString:Ansistring;
     FGsmSms: TGsmSms;
@@ -146,15 +148,31 @@ begin
   if AnsiPos(HttpResponse,AES256(MbHW)) > 0 then SaveLic(true)
   else SaveLic(false);          // false - рандомим
   // -----------------------------------
-
-
-
 end;
 
 procedure TfrmMain.ApplyClick(Sender: TObject);
 begin
   SaveConfig;
   LoadConfig;
+end;
+
+procedure TfrmMain.AutoRunClick(Sender: TObject);
+var reg:Tregistry;
+begin
+  reg := TRegistry.Create();
+  reg.RootKey := HKEY_CURRENT_USER;
+
+// автозапуск от юзера
+  if reg.OpenKey('Software\Microsoft\Windows\CurrentVersion\Run', True) then
+    begin
+      if AutoRun.Checked=true then
+        begin
+           reg.WriteString('SMS_Sender', Application.ExeName);
+        end
+      else reg.DeleteValue('SMS_Sender');
+    end;
+  reg.CloseKey();
+  reg.Free;
 end;
 
 procedure TfrmMain.Button1Click(Sender: TObject);
@@ -169,13 +187,13 @@ procedure TfrmMain.Button2Click(Sender: TObject);
 var
   LSMS: TSMSMessage;
 begin
-  LSMS := FGsmSms.GetSMS(StrToInt(InputBox('Input number of message for read', 'number', '0')));
+  LSMS := FGsmSms.GetSMS(StrToInt(InputBox('Введите номер сообщения для прочтения', 'номер', '0')));
   frmSMS.ShowSMS(LSMS);
 end;
 
 procedure TfrmMain.Button3Click(Sender: TObject);
 begin
-  FGsmSms.DeleteSMS(StrToInt(InputBox('Input number of message for delete', 'number', '0')));
+  FGsmSms.DeleteSMS(StrToInt(InputBox('Введите номер сообщения для удаления', 'номер', '0')));
 end;
 
 procedure TfrmMain.Button4Click(Sender: TObject);
@@ -188,13 +206,6 @@ begin
   for i := 0 to Length(LSMSs) - 1 do
     frmSMS.ShowSMS(LSMSs[i]);
 end;
-
-procedure TfrmMain.Button5Click(Sender: TObject);
-var a,b,Key:Ansistring;
-begin
-end;
-
-
 
 procedure TfrmMain.Button6Click(Sender: TObject);
 var a,b: ansistring;
@@ -215,7 +226,7 @@ end;
 function TfrmMain.CheckLic: bool;
 var s,version:AnsiString;
   f: TextFile; // файл
-  buf: string[80]; // буфер для чтения из файла
+  //buf: string[80]; // буфер для чтения из файла
   stringlist:TStringlist;
 const
   fName= 'key.lic'; // имя файла
@@ -257,6 +268,7 @@ begin
    keyFileStringList.Add(s);
    keyFileStringList.SaveToFile(namekeyfile,TEncoding.ASCII);
    FreeAndNil(keyFileStringList);
+   SaveConfig;      // сохраним все настройки и ключ в реестр
    ShowMessage('Лицензия сохранена. Храните ключ активации!');
    ShowMessage('Перезапустите программу!');
    Application.Terminate;
@@ -390,7 +402,9 @@ begin
       if reg.ReadInteger('SaveInFile')=1 then
           frmMain.SaveInFile.Checked := true;
     end;
-
+    // загрузим ключ
+    if reg.ValueExists('key') then
+      KeyEdit.Text := reg.ReadString('key');
   end;
   reg.CloseKey;
   reg.Destroy;
@@ -403,6 +417,17 @@ begin
   //seCOMChange(Sender);
   FGsmSms.PortNum := seCOM.Value;
   FGsmSms.TimeOut := seTimeOut.Value;
+
+  // автозапуск от юзера
+  reg := TRegistry.Create();
+  reg.RootKey := HKEY_CURRENT_USER;
+
+  if reg.OpenKey('Software\Microsoft\Windows\CurrentVersion\Run', false) then
+    if reg.ValueExists('SMS_Sender') then
+      if reg.ReadString('SMS_Sender') <> '' then
+        AutoRun.Checked := True;
+  reg.CloseKey;
+  reg.Destroy;
   Except
     ShowMessage('Неизвестная ошибка LoadConfig');
   end;
@@ -420,14 +445,29 @@ try
     reg.WriteInteger('seCOM', seCOM.Value);
     reg.WriteInteger('seTimeOut', seTimeOut.Value);
     reg.WriteInteger('sePort', sePort.Value);
+    reg.WriteString('key',KeyEdit.Text);
     if frmMain.SaveInFile.Checked=true then reg.WriteInteger('SaveInFile', 1)
-    else  reg.WriteInteger('SaveInFile', 0)
+    else  reg.WriteInteger('SaveInFile', 0);
   end;
   reg.CloseKey;
   reg.Destroy;
 Except
     ShowMessage('Неизвестная ошибка SaveConfig');
 end;
+  if AutoRun.Checked=true then
+  begin
+    // автозапуск от юзера
+    reg := TRegistry.Create();
+    reg.RootKey := HKEY_CURRENT_USER;
+
+    if reg.OpenKey('Software\Microsoft\Windows\CurrentVersion\Run', True) then
+    begin
+      reg.WriteString('SMS_Sender', Application.ExeName);
+      reg.CloseKey();
+      reg.Free;
+    end;
+  end;
+
 end;
 
 

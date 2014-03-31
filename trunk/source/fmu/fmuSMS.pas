@@ -34,7 +34,7 @@ begin
   LabeledEdit2.Enabled := False;
   LabeledEdit2.Text := '';
   LabeledEdit1.Text := '';
-  MemoSMS.Text := 'бла бла бла';
+  MemoSMS.Text := 'текст сообщения';
   ShowModal;
   Result.Number := LabeledEdit1.Text;
   Result.Text := MemoSMS.Text;
