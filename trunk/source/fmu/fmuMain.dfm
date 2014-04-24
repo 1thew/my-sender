@@ -1,9 +1,11 @@
 object frmMain: TfrmMain
   Left = 360
   Top = 225
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'SMS Send-er'
-  ClientHeight = 355
-  ClientWidth = 618
+  ClientHeight = 365
+  ClientWidth = 628
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -156,7 +158,7 @@ object frmMain: TfrmMain
     Top = 10
     Width = 585
     Height = 337
-    ActivePage = ActivationTab
+    ActivePage = SettingsTab
     TabOrder = 0
     object SettingsTab: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -297,7 +299,7 @@ object frmMain: TfrmMain
         Top = 105
         Width = 241
         Height = 105
-        Caption = #1054#1073#1097#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+        Caption = #1043#1083#1086#1073#1072#1083#1100#1085#1099#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
         TabOrder = 2
         object DisableSMS: TCheckBox
           Left = 16
@@ -346,8 +348,6 @@ object frmMain: TfrmMain
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        Lines.Strings = (
-          #1058#1077#1082#1091#1097#1072#1103' '#1072#1082#1090#1080#1074#1085#1086#1089#1090#1100)
         ParentFont = False
         ReadOnly = True
         ScrollBars = ssVertical
