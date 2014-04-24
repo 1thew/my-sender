@@ -65,7 +65,6 @@ type
     procedure OnClose(Sender: TObject; var Action: TCloseAction);
     procedure ApplyClick(Sender: TObject);
     procedure ActivationClick(Sender: TObject);
-    procedure Button6Click(Sender: TObject);
     procedure AutoRunClick(Sender: TObject);
   private
     KeyString:Ansistring;
@@ -93,8 +92,13 @@ uses fmuSMS;
 
 procedure TfrmMain.MemoWrite(AMessage: AnsiString);
 begin
-  MemoLog.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
-  Log.AddLogInFile(AMessage);
+  try
+    MemoLog.Lines.Add(TimeToStr(GetTime)+' '+AMessage);
+    Log.AddLogInFile(AMessage);
+  finally
+  begin Log.AddLogInFile('Запись в файл завершена.');
+  end;
+  end;
 end;
 
 procedure TfrmMain.OnClose(Sender: TObject; var Action: TCloseAction);
@@ -207,11 +211,6 @@ begin
     frmSMS.ShowSMS(LSMSs[i]);
 end;
 
-procedure TfrmMain.Button6Click(Sender: TObject);
-var a,b: ansistring;
-begin
-  if CheckLic=true then ShowMEssage('CheckLic=true');
-end;
 
 procedure TfrmMain.WMSysCommand(var Msg: TWMSysCommand);
 begin
@@ -232,6 +231,8 @@ const
   fName= 'key.lic'; // имя файла
 begin
 result:=false;
+if FileExists(fName)=false then Exit;
+
 try
   stringList:=TStringList.Create;
   stringList.LoadFromFile(fName);
@@ -302,15 +303,17 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   s:AnsiString;
 begin
+  memoLog.Clear;
+
   // получим HW ID
   GetCompUIN;
   MbHWEdit.Text:=MbHW;
 
-  LoadConfig;
-
    // узнаём версию и пишем в caption
   s:=FileVersion(Paramstr(0));
   frmMain.Caption:=(frmMain.Caption+' '+'ver.'+ s);
+
+  LoadConfig;
 
   // проверим лицензию
   if CheckLic=false then
@@ -320,6 +323,7 @@ begin
     PageControl1.ActivePage:=ActivationTab;
   end
   else PageControl1.ActivePage:=SettingsTab;
+
 
   Log:=TLog.Create;
   if frmMain.SaveInFile.Checked = true then Log.AllowSaveInFile:=true;
@@ -375,7 +379,7 @@ begin
    //// конец места для доп проверок
    number:=copy(s,5,11);
    message:=copy(s,21,(Length(s)-21));
-   MemoWrite(s);
+   frmMain.MemoWrite(s);
 
    if DisableSMS.Checked=true then exit;
    LSMS1:=SetSMS(number,message);
@@ -413,7 +417,7 @@ begin
   if sePort.Value >0 then  IdHTTPServer1.DefaultPort:=sePort.Value;
   // прописываем настройки по классу
   FGsmSms := TGsmSms.Create;
-  FGsmSms.OnLog := MemoWrite;
+  FGsmSms.OnLog := frmMain.MemoWrite;
   //seCOMChange(Sender);
   FGsmSms.PortNum := seCOM.Value;
   FGsmSms.TimeOut := seTimeOut.Value;
